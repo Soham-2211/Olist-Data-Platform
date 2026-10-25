@@ -1,0 +1,51 @@
+# Olist data platform configuration. Every tunable lives here.
+
+paths:
+  source_dir: data/source        # pinned raw files (downloaded + checksum-verified)
+  landing_dir: data/landing      # simulated monthly drops from the source system
+  warehouse: data/warehouse.db   # SQLite warehouse (bronze / silver / gold / meta)
+  sql_dir: sql
+  seeds_dir: seeds
+  models_dir: models
+  reports_dir: reports
+  figures_dir: reports/figures
+  docs_dir: docs
+
+# Raw files pinned to an exact commit so the pipeline is reproducible forever.
+source:
+  base_url: https://raw.githubusercontent.com/dujiaying/olist/96d0db2e45e684d5a7069911368d823a19e82d38/data
+  files:
+    orders: {file: olist_orders_dataset.csv, sha256: 8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf}
+    order_items: {file: olist_order_items_dataset.csv, sha256: 0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279}
+    order_payments: {file: olist_order_payments_dataset.csv, sha256: 4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0}
+    order_reviews: {file: olist_order_reviews_dataset.csv, sha256: 0dff69f6fed33a13648020198ea94d7ae12afbdd4904186c6cd904e27a3e1ccd}
+    customers: {file: olist_customers_dataset.csv, sha256: 983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2}
+    sellers: {file: olist_sellers_dataset.csv, sha256: 1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e}
+    products: {file: olist_products_dataset.csv, sha256: 3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc}
+    geolocation: {file: olist_geolocation_dataset.csv, sha256: b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6}
+    category_translation: {file: product_category_name_translation.csv, sha256: a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278}
+
+# The source system "sends" one drop per month-end. Orders re-appear in later
+# drops whenever their status changes (approved -> shipped -> delivered).
+simulation:
+  first_cutoff: "2017-01-31"
+  last_cutoff: "2018-10-31"
+
+ml:
+  label: is_late                     # delivered after the promised (estimated) date
+  first_train_cutoff: "2017-12-31"   # first model trained on this month-end snapshot
+  min_train_rows: 5000
+  valid_months: 2                    # most recent labelled months held out for early stopping
+  monitor_until: "2018-07-31"        # later purchases are right-censored (late orders not yet delivered)
+  offline_split:
+    train_end: "2017-12-31"
+    valid_end: "2018-02-28"
+    test_end: "2018-07-31"
+  hgb:
+    learning_rate: 0.05
+    max_leaf_nodes: 31
+    min_samples_leaf: 50
+    l2_regularization: 1.0
+    max_iter: 500
+  top_k_share: 0.10                  # ops team can proactively contact 10% of orders
+  psi_alert: 0.2

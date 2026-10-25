@@ -1,0 +1,254 @@
+{
+  "warehouse_rows": {
+    "bronze_orders": 136542,
+    "silver_orders": 99441,
+    "fact_orders": 99441,
+    "fact_order_items": 112650,
+    "dim_customer": 96096,
+    "dim_seller": 3095,
+    "dim_product": 32951,
+    "silver_quarantine": 772,
+    "ml_features": 98666,
+    "ml_predictions": 107550,
+    "meta_model_registry": 12
+  },
+  "avg_review": {
+    "late": 2.26,
+    "on_time": 4.28
+  },
+  "offline": {
+    "split": {
+      "train": {
+        "label_mature_by": "2017-12-31",
+        "rows": 39922
+      },
+      "valid": {
+        "purchases": "2017-12-31 < d <= 2018-02-28",
+        "rows": 13625,
+        "late_rate": 0.0976
+      },
+      "test": {
+        "purchases": "2018-02-28 < d <= 2018-07-31",
+        "rows": 32801,
+        "late_rate": 0.0718
+      }
+    },
+    "validation": {
+      "logreg": {
+        "n": 13625,
+        "late_rate": 0.0976,
+        "roc_auc": 0.6969,
+        "pr_auc": 0.1941,
+        "brier": 0.0902,
+        "precision_at_k": 0.2335,
+        "recall_at_k": 0.2391,
+        "lift_at_k": 2.3919
+      },
+      "hgb": {
+        "n": 13625,
+        "late_rate": 0.0976,
+        "roc_auc": 0.6329,
+        "pr_auc": 0.1547,
+        "brier": 0.087,
+        "precision_at_k": 0.1916,
+        "recall_at_k": 0.1962,
+        "lift_at_k": 1.9631
+      }
+    },
+    "test": {
+      "Heuristic: seller's past late rate": {
+        "n": 32801,
+        "late_rate": 0.0718,
+        "roc_auc": 0.4995,
+        "pr_auc": 0.0725,
+        "brier": 0.0682,
+        "precision_at_k": 0.0759,
+        "recall_at_k": 0.1057,
+        "lift_at_k": 1.0569
+      },
+      "Heuristic: region's late rate, last 30 days": {
+        "n": 32801,
+        "late_rate": 0.0718,
+        "roc_auc": 0.5647,
+        "pr_auc": 0.0882,
+        "brier": 0.0724,
+        "precision_at_k": 0.0982,
+        "recall_at_k": 0.1367,
+        "lift_at_k": 1.3668
+      },
+      "Logistic regression": {
+        "n": 32801,
+        "late_rate": 0.0718,
+        "roc_auc": 0.6428,
+        "pr_auc": 0.1156,
+        "brier": 0.0666,
+        "precision_at_k": 0.143,
+        "recall_at_k": 0.1991,
+        "lift_at_k": 1.9907
+      },
+      "Gradient boosting": {
+        "n": 32801,
+        "late_rate": 0.0718,
+        "roc_auc": 0.6503,
+        "pr_auc": 0.128,
+        "brier": 0.0658,
+        "precision_at_k": 0.1619,
+        "recall_at_k": 0.2254,
+        "lift_at_k": 2.2539
+      }
+    },
+    "experiments": {
+      "Point-in-time features, future test months (reported)": 0.128,
+      "Same model, random 80/20 split": 0.3105,
+      "Naive all-time aggregates (leaky)": 0.3307
+    },
+    "top_features": [
+      "customer_state",
+      "promised_days",
+      "distance_km",
+      "state_deliveries_prev_30d",
+      "purchase_month",
+      "category",
+      "freight_value",
+      "state_late_rate_prev_30d"
+    ]
+  },
+  "production": {
+    "overall_pooled": {
+      "monthly_retrain": {
+        "n": 46427,
+        "late_rate": 0.0794,
+        "roc_auc": 0.6329,
+        "pr_auc": 0.1288,
+        "brier": 0.0728,
+        "precision_at_k": 0.1518,
+        "recall_at_k": 0.1913,
+        "lift_at_k": 1.9125
+      },
+      "static": {
+        "n": 46427,
+        "late_rate": 0.0794,
+        "roc_auc": 0.6329,
+        "pr_auc": 0.1308,
+        "brier": 0.0723,
+        "precision_at_k": 0.1557,
+        "recall_at_k": 0.1961,
+        "lift_at_k": 1.9613
+      }
+    },
+    "mean_of_monthly": {
+      "monthly_retrain": {
+        "pr_auc": 0.1527,
+        "roc_auc": 0.6889,
+        "precision_at_k": 0.1764,
+        "recall_at_k": 0.2641
+      },
+      "static": {
+        "pr_auc": 0.1291,
+        "roc_auc": 0.6443,
+        "precision_at_k": 0.152,
+        "recall_at_k": 0.2161
+      }
+    },
+    "retrain_wins_months": 6,
+    "tied_months": 1,
+    "n_months": 7,
+    "months": [
+      "2018-01",
+      "2018-02",
+      "2018-03",
+      "2018-04",
+      "2018-05",
+      "2018-06",
+      "2018-07"
+    ],
+    "scored_orders": 53775,
+    "drift_alerts": [
+      {
+        "month": "2018-01",
+        "feature": "state_late_rate_prev_30d",
+        "psi": 4.695
+      },
+      {
+        "month": "2018-01",
+        "feature": "promised_days",
+        "psi": 0.202
+      },
+      {
+        "month": "2018-01",
+        "feature": "seller_prior_late_rate_smoothed",
+        "psi": 0.214
+      },
+      {
+        "month": "2018-02",
+        "feature": "state_late_rate_prev_30d",
+        "psi": 1.653
+      },
+      {
+        "month": "2018-03",
+        "feature": "state_late_rate_prev_30d",
+        "psi": 2.967
+      },
+      {
+        "month": "2018-03",
+        "feature": "seller_prior_late_rate_smoothed",
+        "psi": 0.307
+      },
+      {
+        "month": "2018-04",
+        "feature": "state_late_rate_prev_30d",
+        "psi": 7.615
+      },
+      {
+        "month": "2018-04",
+        "feature": "seller_prior_late_rate_smoothed",
+        "psi": 0.882
+      },
+      {
+        "month": "2018-05",
+        "feature": "state_late_rate_prev_30d",
+        "psi": 2.282
+      },
+      {
+        "month": "2018-05",
+        "feature": "seller_prior_late_rate_smoothed",
+        "psi": 0.963
+      },
+      {
+        "month": "2018-06",
+        "feature": "state_late_rate_prev_30d",
+        "psi": 2.594
+      },
+      {
+        "month": "2018-06",
+        "feature": "promised_days",
+        "psi": 0.34
+      },
+      {
+        "month": "2018-06",
+        "feature": "seller_prior_late_rate_smoothed",
+        "psi": 0.92
+      },
+      {
+        "month": "2018-07",
+        "feature": "state_late_rate_prev_30d",
+        "psi": 0.747
+      },
+      {
+        "month": "2018-07",
+        "feature": "promised_days",
+        "psi": 0.404
+      },
+      {
+        "month": "2018-07",
+        "feature": "seller_prior_late_rate_smoothed",
+        "psi": 0.628
+      }
+    ]
+  },
+  "batches": 22,
+  "models_registered": {
+    "monthly_retrain": 11,
+    "static": 1
+  }
+}

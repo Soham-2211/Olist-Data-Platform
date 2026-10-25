@@ -1,0 +1,77 @@
+# Data-quality contract. Each test returns the number of failing rows.
+# severity: error (default) stops the pipeline; warn records a known issue.
+
+models:
+  silver_orders:
+    - unique: order_id
+    - not_null: [order_id, customer_id, purchased_at, estimated_delivery_date]
+    - accepted_values:
+        column: order_status
+        values: [created, approved, invoiced, processing, shipped, delivered, canceled, unavailable]
+    - expression_is_true: "delivered_at IS NULL OR delivered_at >= purchased_at"
+      name: delivered_after_purchase
+    - expression_is_true: "carrier_at IS NULL OR carrier_at >= purchased_at"
+      name: carrier_after_purchase_after_repair
+    - expression_is_true: "flag_delivered_without_date = 0"
+      name: delivered_orders_have_date
+      severity: warn
+
+  silver_order_items:
+    - unique: [order_id, order_item_id]
+    - relationships: {column: order_id, to: silver_orders, field: order_id}
+    - relationships: {column: product_id, to: silver_products, field: product_id}
+    - relationships: {column: seller_id, to: silver_sellers, field: seller_id}
+    - range: {column: price, min: 0.01}
+    - range: {column: freight_value, min: 0}
+
+  silver_payments:
+    - unique: [order_id, payment_sequential]
+    - relationships: {column: order_id, to: silver_orders, field: order_id}
+    - range: {column: installments, min: 1, max: 24}
+
+  silver_reviews:
+    - unique: order_id
+    - range: {column: review_score, min: 1, max: 5}
+
+  silver_customers:
+    - unique: customer_id
+    - expression_is_true: "length(zip_prefix) = 5"
+      name: zip_prefix_has_5_digits
+
+  silver_products:
+    - unique: product_id
+    - expression_is_true: "category <> 'untranslated'"
+      name: every_category_translated
+
+  silver_geolocation:
+    - unique: zip_prefix
+    - range: {column: lat, min: -33.75, max: 5.27}
+
+  dim_customer:
+    - unique: customer_unique_id
+    - expression_is_true: "geo_source <> 'none'"
+      name: customer_geocoded
+      severity: warn
+
+  dim_seller:
+    - unique: seller_id
+    - expression_is_true: "geo_source <> 'none'"
+      name: seller_geocoded
+      severity: warn
+
+  fact_orders:
+    - unique: order_id
+    - relationships: {column: customer_unique_id, to: dim_customer, field: customer_unique_id}
+    - relationships: {column: purchase_date, to: dim_date, field: date_key}
+    - expression_is_true: "payment_mismatch = 0"
+      name: items_plus_freight_equal_payments
+      severity: warn
+    - expression_is_true: "n_items > 0 OR order_status IN ('canceled', 'unavailable', 'created', 'invoiced', 'processing', 'approved', 'shipped')"
+      name: delivered_orders_have_items
+
+  ml_features:
+    - unique: order_id
+    - not_null: [seller_id, promised_days, state_late_rate_prev_30d]
+    - range: {column: seller_prior_late_rate_smoothed, min: 0, max: 1}
+    - expression_is_true: "is_late IS NULL OR delivered_at IS NOT NULL"
+      name: label_only_when_delivered

@@ -1,0 +1,154 @@
+[
+  {
+    "batch_id": "batch_2017_01",
+    "run_id": "957f2496",
+    "dq_failed_warn": 1,
+    "seconds": 5.5
+  },
+  {
+    "batch_id": "batch_2017_02",
+    "run_id": "a1f2f768",
+    "dq_failed_warn": 1,
+    "seconds": 2.8
+  },
+  {
+    "batch_id": "batch_2017_03",
+    "run_id": "dac7879b",
+    "dq_failed_warn": 2,
+    "seconds": 3.3
+  },
+  {
+    "batch_id": "batch_2017_04",
+    "run_id": "487e9720",
+    "dq_failed_warn": 2,
+    "seconds": 3.4
+  },
+  {
+    "batch_id": "batch_2017_05",
+    "run_id": "97c34ade",
+    "dq_failed_warn": 2,
+    "seconds": 3.8
+  },
+  {
+    "batch_id": "batch_2017_06",
+    "run_id": "8fb2a7f7",
+    "dq_failed_warn": 2,
+    "seconds": 4.0
+  },
+  {
+    "batch_id": "batch_2017_07",
+    "run_id": "f786d689",
+    "dq_failed_warn": 2,
+    "seconds": 4.5
+  },
+  {
+    "batch_id": "batch_2017_08",
+    "run_id": "d22fc312",
+    "dq_failed_warn": 2,
+    "seconds": 5.1
+  },
+  {
+    "batch_id": "batch_2017_09",
+    "run_id": "5951bdb6",
+    "dq_failed_warn": 2,
+    "seconds": 5.4
+  },
+  {
+    "batch_id": "batch_2017_10",
+    "run_id": "7ebc0bc2",
+    "dq_failed_warn": 2,
+    "seconds": 5.8
+  },
+  {
+    "batch_id": "batch_2017_11",
+    "run_id": "2ee9426a",
+    "dq_failed_warn": 2,
+    "seconds": 6.7
+  },
+  {
+    "batch_id": "batch_2017_12",
+    "run_id": "5d7210cb",
+    "dq_failed_warn": 2,
+    "seconds": 9.6
+  },
+  {
+    "batch_id": "batch_2018_01",
+    "run_id": "db68ab2d",
+    "dq_failed_warn": 2,
+    "scored_static": 7220,
+    "scored_monthly_retrain": 7220,
+    "seconds": 10.4
+  },
+  {
+    "batch_id": "batch_2018_02",
+    "run_id": "cabb22a5",
+    "dq_failed_warn": 2,
+    "scored_static": 6694,
+    "scored_monthly_retrain": 6694,
+    "seconds": 11.3
+  },
+  {
+    "batch_id": "batch_2018_03",
+    "run_id": "6fe05366",
+    "dq_failed_warn": 2,
+    "scored_static": 7188,
+    "scored_monthly_retrain": 7188,
+    "seconds": 12.3
+  },
+  {
+    "batch_id": "batch_2018_04",
+    "run_id": "179383f5",
+    "dq_failed_warn": 2,
+    "scored_static": 6934,
+    "scored_monthly_retrain": 6934,
+    "seconds": 13.8
+  },
+  {
+    "batch_id": "batch_2018_05",
+    "run_id": "a5ef6874",
+    "dq_failed_warn": 2,
+    "scored_static": 6853,
+    "scored_monthly_retrain": 6853,
+    "seconds": 15.2
+  },
+  {
+    "batch_id": "batch_2018_06",
+    "run_id": "ab2788e4",
+    "dq_failed_warn": 2,
+    "scored_static": 6160,
+    "scored_monthly_retrain": 6160,
+    "seconds": 16.4
+  },
+  {
+    "batch_id": "batch_2018_07",
+    "run_id": "0faf415d",
+    "dq_failed_warn": 2,
+    "scored_static": 6273,
+    "scored_monthly_retrain": 6273,
+    "seconds": 16.8
+  },
+  {
+    "batch_id": "batch_2018_08",
+    "run_id": "52b1d972",
+    "dq_failed_warn": 2,
+    "scored_static": 6452,
+    "scored_monthly_retrain": 6452,
+    "seconds": 18.3
+  },
+  {
+    "batch_id": "batch_2018_09",
+    "run_id": "8db060de",
+    "dq_failed_warn": 2,
+    "scored_static": 1,
+    "scored_monthly_retrain": 1,
+    "seconds": 17.5
+  },
+  {
+    "batch_id": "batch_2018_10",
+    "run_id": "9ac020fb",
+    "dq_failed_warn": 2,
+    "scored_static": 0,
+    "scored_monthly_retrain": 0,
+    "seconds": 19.0
+  }
+]
